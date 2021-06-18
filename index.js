@@ -1,12 +1,13 @@
 const express = require('express')
 const morgan = require('morgan')
 const app = express()
+const cors = require('cors')
 
 app.use(express.json())
 app.use(morgan('tiny'));
+app.use(cors())
 
 const requestLogger = (request, response, next) => {
-  console.log(request)
   console.log('Body:  ', request.body)
   next()
 }
@@ -30,7 +31,7 @@ let contacts = [
       id: 3
     },
     {
-      name: "Mary Poppendieck",
+      name: "Dad",
       number: "39-23-6423122",
       id: 4
     }
@@ -45,11 +46,11 @@ const generateId = () => {
   return newId
 }
 
-app.get('/persons',(request, response) => {
+app.get('/api/persons',(request, response) => {
   response.json(contacts)
 })
 
-app.get('/persons/:id',(request, response) => {
+app.get('/api/persons/:id',(request, response) => {
   const id = Number(request.params.id)
   const contact = contacts.filter(contact => contact.id === id)
   if(contact.length === 0){
@@ -58,7 +59,7 @@ app.get('/persons/:id',(request, response) => {
   response.json(contact)
 })
 
-app.post('/persons/',(request, response) => {
+app.post('/api/persons/',(request, response) => {
   const newContact = request.body
   if(!(newContact) || !(newContact.name)){
     return response.status(400).json({error:'Name cannot be Empty'})
@@ -76,17 +77,18 @@ app.post('/persons/',(request, response) => {
   response.json(contacts)
 })
 
-app.delete('/persons/:id',(request, response) => {
+app.delete('/api/persons/:id',(request, response) => {
   const id = Number(request.params.id)
   contacts = contacts.filter(contact => contact.id != id)
   return response.status(204).end()
 })
 
-app.get('/info',(request, response) => { 
+app.get('/api/info',(request, response) => { 
   response.send(`<div><p>Phonebook has info for ${contacts.length} people</p><p>${new Date()}</p></div>`)
 })
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
+console.log(process.env.PORT)
 app.listen(PORT,()=>{
   console.log(`Server running on port ${PORT}`)
 })
