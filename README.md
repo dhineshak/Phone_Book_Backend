@@ -1,6 +1,6 @@
 ### PHONEBOOK_APPLICATION
 
->**[hyperlink to PhoneBook App](https://git.heroku.com/hidden-stream-35339.git)**
+>**[hyperlink to PhoneBook App](https://hidden-stream-35339.herokuapp.com/)**
 
 Check it out GUYS!!!!
 
